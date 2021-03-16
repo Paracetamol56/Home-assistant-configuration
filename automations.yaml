@@ -1,0 +1,101 @@
+- id: '1610626845056'
+  alias: Température du serveur
+  description: Notification si la température du serveur est trop élevé
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.processor_temperature
+    above: '60'
+  condition: []
+  action:
+  - service: notify.mail
+    data:
+      title: Alerte de température
+      message: 'Alerte !
+
+        La température du serveur est trop haute ({{states.sensor.processor_temperature.state}}°C)'
+  mode: single
+- id: '1610716487922'
+  alias: Résumé quotidien
+  description: Envoi un résumé de l'activité du serveur via Signal
+  trigger:
+  - platform: time
+    at: '20:00:00'
+  condition: []
+  action:
+  - service: notify.mail
+    data:
+      title: Information du serveur
+      message: 'Voici le resumé quotidien des informations du serveur: {{- "\n\n"
+        -}} Disque utilisé:{{states.sensor.glances_data_used.state}} MiB({{states.sensor.glances_data_used.state}}%)
+        {{- ''\n'' -}} Conteneurs activés:{{states.sensor.glances_containers_active.state}}
+        {{- ''\n'' -}} Température du CPU:{{states.sensor.glances_cpu_thermal_1_temperature.state}}°C
+        {{- ''\n'' -}} Utilisation du CPU:{{states.sensor.glances_cpu_used.state}}%
+        {{- ''\n'' -}} Utilisation de la RAM:{{states.sensor.glances_ram_used.state}}
+        MiB ({{states.sensor.glances_ram_used_percent.state}}%) {{- ''\n'' -}} Utilisation
+        du Swap:{{states.sensor.glances_swap_used_percent.state}}% {{- ''\n'' -}}
+        Processus en cours:{{states.sensor.glances_total.state}} {{- ''\n'' -}} Utilisation
+        du CPU des conteneurs:{{states.sensor.glances_containers_cpu_used.state}}%
+        {{- ''\n'' -}}'
+  mode: single
+- id: '1610884161521'
+  alias: Démarrage
+  description: Envoi une notification lors du démarrage
+  trigger:
+  - platform: homeassistant
+    event: start
+  condition: []
+  action:
+  - service: notify.mail
+    data:
+      title: Le serveur vient de démarrer
+      message: Le serveur vient de démarrer
+  mode: single
+- id: '1610884487578'
+  alias: Arrêt
+  description: Envoi une notification lors de l'arret
+  trigger:
+  - platform: homeassistant
+    event: shutdown
+  condition: []
+  action:
+  - service: notify.mail
+    data:
+      message: Le serveur vient de s’arrêter
+      title: Le serveur vient de s’arrêter
+  mode: single
+- id: '1615653208756'
+  alias: Lampe du bureau (couché du soleil)
+  description: Allume la lumière le soir si l'appartement est occupé
+  trigger:
+  - platform: sun
+    event: sunset
+  condition:
+  - condition: zone
+    entity_id: person.matheo_galuba
+    zone: zone.home
+  action:
+  - type: turn_on
+    device_id: d2bbc71560eefafeef265f3f369cdbfc
+    entity_id: switch.desk_lamp_switch
+    domain: switch
+  mode: single
+- id: '1615666551541'
+  alias: Lampe du bureau (réveil)
+  description: Allume la lumière du bureau quand le réveil sonne
+  trigger:
+  - platform: state
+    entity_id: sensor.sm_a505fn_prochaine_alarme
+    to: unavailable
+  condition:
+  - condition: time
+    before: '10:00:00'
+    after: 00:00:00
+  - condition: zone
+    entity_id: person.matheo_galuba
+    zone: zone.home
+  action:
+  - type: turn_on
+    device_id: d2bbc71560eefafeef265f3f369cdbfc
+    entity_id: switch.desk_lamp_switch
+    domain: switch
+  mode: single

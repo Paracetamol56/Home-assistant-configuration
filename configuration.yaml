@@ -1,0 +1,109 @@
+
+# Configure a default setup of Home Assistant (frontend, api, etc)
+default_config:
+
+# Text to speech
+tts:
+  - platform: google_translate
+
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+
+# Custom themes
+frontend:
+  themes: !include_dir_merge_named themes/
+
+# HACS
+hacs:
+  token: !secret hacs-token
+  sidepanel_title:  HACS
+  sidepanel_icon: "mdi:alpha-c-box"
+  release_limit: 5
+
+binary_sensor:
+  - platform: iss
+    show_on_map: true
+
+sensor:
+    # Open hardware monitor platform
+  - platform: openhardwaremonitor
+    host: 192.168.1.20
+    # System monitor platform
+  - platform: systemmonitor
+    resources:
+      - type: disk_use
+        arg: /
+      - type: memory_use
+      - type: processor_use
+      - type: processor_temperature
+      - type: last_boot
+    # Next launch sensor
+  - platform: launch_library
+    # Opensky platform
+  - platform: opensky
+    radius: 10
+    
+
+########### HACS ###########
+
+# Authenticated
+  - platform: authenticated
+  
+############################
+
+# Speedtestdotnet
+speedtestdotnet:
+  server_id: !secret speedtestdotnet-server_id
+  scan_interval:
+    minutes: 30
+
+# Spotify
+spotify:
+  client_id: !secret spotify-client_id
+  client_secret: !secret spotify-client_secret
+
+# Notifications
+notify:
+    # Notifications for Signal Messenger
+  - name: signal
+    platform: signal_messenger
+    url: "http://192.168.1.60:8080" # the URL where the Signal Messenger REST API is listening
+    number: !secret signal-number # the sender number
+    recipients: # one or more recipients
+      - !secret signal-recipients
+    # Notifications for emails
+  - name: mail
+    platform: smtp
+    server: smtp.mail.fr
+    port: 587
+    timeout: 15
+    sender: !secret smtp-sender
+    encryption: starttls
+    username: !secret smtp-email
+    password: !secret smtp-password
+    recipient:
+      - !secret mail-recipient
+    sender_name: Home Assistant
+
+#Pi-hole
+pi_hole:
+  - host: '192.168.1.60:8089'
+    api_key: !secret pi_hole-api_key
+
+# InfluxDB
+influxdb:
+  host: a0d7b954-influxdb
+  port: 8086
+  database: home_assistant
+  username: !secret influxdb-username
+  password: !secret influxdb-password
+  max_retries: 3
+  default_measurement: state
+  
+# Google API
+google:
+  client_id: !secret google-client_id
+  client_secret: !secret google-client_secret
+  
