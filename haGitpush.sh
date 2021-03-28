@@ -1,4 +1,4 @@
-
+#!/bin/bash
 # Git push the config folder
 
 git add .
