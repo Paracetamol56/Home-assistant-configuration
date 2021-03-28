@@ -15,6 +15,12 @@ scene: !include scenes.yaml
 frontend:
   themes: !include_dir_merge_named themes/
 
+# Microsoft integration
+# calendar:
+#   - platform: microsoft_todo
+#     client_id: !secret microsoft-client_id
+#     client_secret: !secret microsoft-client_secret
+
 # HACS
 hacs:
   token: !secret hacs-token
@@ -69,7 +75,7 @@ notify:
     # Notifications for Signal Messenger
   - name: signal
     platform: signal_messenger
-    url: "http://192.168.1.60:8080" # the URL where the Signal Messenger REST API is listening
+    url: "http://127.0.0.1:8080" # the URL where the Signal Messenger REST API is listening
     number: !secret signal-number # the sender number
     recipients: # one or more recipients
       - !secret signal-recipients
