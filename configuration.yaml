@@ -50,6 +50,13 @@ sensor:
     # Opensky platform
   - platform: opensky
     radius: 10
+  - platform: github
+    access_token: !secret github-access_token
+    repositories:
+      - path: 'Paracetamol56/Home-assistant-configuration'
+        name: "Home-assistant-configuration"
+      - path: 'Paracetamol56/E428'
+        name: "E428"
     
 
 ########### HACS ###########
