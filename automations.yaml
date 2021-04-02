@@ -69,6 +69,7 @@
   trigger:
   - platform: sun
     event: sunset
+    offset: -00:15:00
   condition:
   - condition: zone
     entity_id: person.matheo_galuba
@@ -88,7 +89,7 @@
     to: unavailable
   condition:
   - condition: time
-    before: '10:00:00'
+    before: '8:00:00'
     after: 00:00:00
   - condition: zone
     entity_id: person.matheo_galuba
