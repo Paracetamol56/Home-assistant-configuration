@@ -69,7 +69,7 @@
   trigger:
   - platform: sun
     event: sunset
-    offset: -00:15:00
+    offset: +00:15:00
   condition:
   - condition: zone
     entity_id: person.matheo_galuba
