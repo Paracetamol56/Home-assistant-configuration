@@ -77,7 +77,7 @@
   action:
   - type: turn_on
     device_id: d2bbc71560eefafeef265f3f369cdbfc
-    entity_id: switch.desk_lamp_switch
+    entity_id: switch.sonoff_basic_relay
     domain: switch
   mode: single
 - id: '1615666551541'
@@ -97,6 +97,6 @@
   action:
   - type: turn_on
     device_id: d2bbc71560eefafeef265f3f369cdbfc
-    entity_id: switch.desk_lamp_switch
+    entity_id: switch.sonoff_basic_relay
     domain: switch
   mode: single
