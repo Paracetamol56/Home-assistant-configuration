@@ -17,6 +17,7 @@ custom_components
 .ip_authenticated.yaml
 google_calendars.yaml
 esphome/*
+node-red/*
 
 ip_bans.yaml
 secrets.yaml
